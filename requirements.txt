@@ -1,3 +1,4 @@
 nltk
 ipdb
 numpy
+wikipedia
