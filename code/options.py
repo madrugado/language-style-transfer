@@ -19,7 +19,6 @@ def load_arguments():
                            type=bool,
                            default=False)
     argparser.add_argument('-w', '--wikipedia',
-                           type=bool,
                            default=False,
                            action='store_true')
     argparser.add_argument('--output',
