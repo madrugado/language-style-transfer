@@ -211,7 +211,7 @@ if __name__ == '__main__':
     args = load_arguments()
 
     if args.wikipedia:
-        data_poetry = load_json("data/poetry.json")  # loading Poushkine's poetry
+        data_poetry = load_json("../data/poetry.json")  # loading Poushkine's poetry
         data_wikipedia = load_wikipedia()
 
         train0 = data_poetry[:int(len(data_poetry)*0.8)]
