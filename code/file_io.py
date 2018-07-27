@@ -1,3 +1,5 @@
+import os
+
 from nltk import word_tokenize, sent_tokenize
 import json
 import wikipedia
@@ -49,12 +51,20 @@ def load_json(path):
 
 def load_wikipedia():
     data = []
-    wikipedia.set_lang("ru")
-    pages = wikipedia.page("Википедия:Хорошие_статьи").links
-    for p in tqdm(pages, "Loading Wikipedia:\t"):
-        sents = sent_tokenize(wikipedia.page(p).content)
-        doc = [word_tokenize(sent) for sent in sents]
-        data.append(doc)
+    wiki_path = "../data/wiki.parsed"
+    if not os.path.exists(wiki_path):
+        wikipedia.set_lang("ru")
+        pages = wikipedia.page("Википедия:Хорошие_статьи").links
+        for p in tqdm(pages, "Loading Wikipedia:\t"):
+            sents = sent_tokenize(wikipedia.page(p).content)
+            doc = [word_tokenize(sent) for sent in sents]
+            data.append(doc)
+
+        with open(wiki_path, "wt") as f:
+            json.dump(data, f)
+    else:
+        with open(wiki_path, "rt") as f:
+            data = json.load(f)
     return data
 
 
