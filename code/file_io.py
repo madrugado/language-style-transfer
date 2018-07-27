@@ -45,7 +45,7 @@ def load_json(path):
                 continue
             sents = sent_tokenize(doc["content"].replace("\\n", " ").replace("\xa0", " "))
             doc = [word_tokenize(sent) for sent in sents]
-            data.append(doc)
+            data += doc
     return data
 
 
@@ -59,7 +59,7 @@ def load_wikipedia():
             try:
                 sents = sent_tokenize(wikipedia.page(p).content)
                 doc = [word_tokenize(sent) for sent in sents]
-                data.append(doc)
+                data += doc
             except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError):
                 # print("Cannot load page: " + str(p, encoding='utf-8'))
                 pass
