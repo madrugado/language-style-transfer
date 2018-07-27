@@ -20,7 +20,8 @@ def load_arguments():
                            default=False)
     argparser.add_argument('-w', '--wikipedia',
                            type=bool,
-                           default=False)
+                           default=False,
+                           action='store_true')
     argparser.add_argument('--output',
                            type=str,
                            default='')
