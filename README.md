@@ -38,4 +38,4 @@ python style_transfer.py --test ../data/yelp/sentiment.test --output ../tmp/sent
 <br>
 
 ## Dependencies
-Python >= 2.7, TensorFlow 1.3.0
+Python >= 3.6, TensorFlow 1.8.0
