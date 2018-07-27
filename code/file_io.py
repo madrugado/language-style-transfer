@@ -1,4 +1,6 @@
 from nltk import word_tokenize, sent_tokenize
+import json
+import wikipedia
 
 
 def load_doc(path):
@@ -29,6 +31,29 @@ def load_vec(path):
             p = [float(v) for v in p]
             x.append(p)
     return x
+
+
+def load_json(path):
+    data = []
+    with open(path) as f:
+        j = json.load(f)
+        for doc in j:
+            if doc['poet_id'] != 'pushkin':
+                continue
+            sents = sent_tokenize(doc["content"].replace("\\n", " ").replace("\xa0", ТУ" "))
+            doc = [word_tokenize(sent) for sent in sents]
+            data.append(doc)
+    return data
+
+def load_wikipedia():
+    data = []
+    wikipedia.set_lang("ru")
+    pages = wikipedia.page("Википедия:Хорошие_статьи").links
+    for p in pages:
+        sents = sent_tokenize(wikipedia.page(p).content)
+        doc = [word_tokenize(sent) for sent in sents]
+        data.append(doc)
+    return data
 
 
 def write_doc(docs, sents, path):

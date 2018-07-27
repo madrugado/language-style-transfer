@@ -10,7 +10,7 @@ import tensorflow as tf
 from vocab import Vocabulary, build_vocab
 from accumulator import Accumulator
 from options import load_arguments
-from file_io import load_sent, write_sent
+from file_io import load_sent, write_sent, load_json, load_wikipedia
 from utils import *
 from nn import *
 import beam_search, greedy_decoding
@@ -210,6 +210,19 @@ def create_model(sess, args, vocab):
 if __name__ == '__main__':
     args = load_arguments()
 
+    if args.wikipedia:
+        data_poetry = load_json("data/poetry.json")  # loading Poushkine's poetry
+        data_wikipedia = load_wikipedia()
+
+        train0 = data_poetry[:int(len(data_poetry)*0.8)]
+        train1 = data_wikipedia[:int(len(data_wikipedia)*0.8)]
+
+        dev0 = data_poetry[int(len(data_poetry)*0.8):]
+        dev1 = data_wikipedia[int(len(data_wikipedia)*0.8):]
+
+        if not os.path.isfile(args.vocab):
+            build_vocab(train0 + train1, args.vocab)
+
     #####   data preparation   #####
     if args.train:
         train0 = load_sent(args.train + '.0', args.max_train_size)
@@ -241,7 +254,7 @@ if __name__ == '__main__':
         else:
             decoder = greedy_decoding.Decoder(sess, args, vocab, model)
 
-        if args.train:
+        if args.train or args.wikipedia:
             batches, _, _ = get_batches(train0, train1, vocab.word2id,
                                         args.batch_size, noisy=True)
             random.shuffle(batches)
@@ -298,7 +311,7 @@ if __name__ == '__main__':
                         # gradients.output()
                         # gradients.clear()
 
-                if args.dev:
+                if args.dev or args.wikipedia:
                     dev_losses = transfer(model, decoder, sess, args, vocab,
                                           dev0, dev1, args.output + '.epoch%d' % epoch)
                     dev_losses.output('dev')
