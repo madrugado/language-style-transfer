@@ -60,7 +60,7 @@ def load_wikipedia():
                 sents = sent_tokenize(wikipedia.page(p).content)
                 doc = [word_tokenize(sent) for sent in sents]
                 data.append(doc)
-            except wikipedia.exceptions.PageError:
+            except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError):
                 # print("Cannot load page: " + str(p, encoding='utf-8'))
                 pass
 
