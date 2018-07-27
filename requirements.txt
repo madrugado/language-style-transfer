@@ -2,3 +2,4 @@ nltk
 ipdb
 numpy
 wikipedia
+tqdm
