@@ -142,17 +142,16 @@ class Model(object):
 
         opt = tf.train.AdamOptimizer(self.learning_rate, beta1, beta2)
 
-        grad_rec, *_ = opt.compute_gradients(self.loss_rec, theta_eg)
-        grad_adv, *_ = opt.compute_gradients(self.loss_adv, theta_eg)
-        grad, *_ = opt.compute_gradients(self.loss, theta_eg)
+        grad_rec, _ = zip(*opt.compute_gradients(self.loss_rec, theta_eg))
+        grad_adv, _ = zip(*opt.compute_gradients(self.loss_adv, theta_eg))
+        grad, _ = zip(*opt.compute_gradients(self.loss, theta_eg))
         grad, _ = tf.clip_by_global_norm(grad, grad_clip)
 
         self.grad_rec_norm = tf.global_norm(grad_rec)
         self.grad_adv_norm = tf.global_norm(grad_adv)
         self.grad_norm = tf.global_norm(grad)
 
-        # self.optimize_tot = opt.apply_gradients(list(zip(grad, theta_eg)))
-        self.optimize_tot = opt.apply_gradients(grad)
+        self.optimize_tot = opt.apply_gradients(list(zip(grad, theta_eg)))
         self.optimize_rec = opt.minimize(self.loss_rec, var_list=theta_eg)
         self.optimize_d0 = opt.minimize(self.loss_d0, var_list=theta_d0)
         self.optimize_d1 = opt.minimize(self.loss_d1, var_list=theta_d1)
