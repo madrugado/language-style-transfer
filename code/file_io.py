@@ -61,7 +61,8 @@ def load_wikipedia():
                 doc = [word_tokenize(sent) for sent in sents]
                 data.append(doc)
             except wikipedia.exceptions.PageError:
-                print("Cannot load page: " + str(p, encoding='utf-8'))
+                # print("Cannot load page: " + str(p, encoding='utf-8'))
+                pass
 
         with open(wiki_path, "wt") as f:
             json.dump(data, f)
