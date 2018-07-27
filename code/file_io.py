@@ -56,9 +56,12 @@ def load_wikipedia():
         wikipedia.set_lang("ru")
         pages = wikipedia.page("Википедия:Хорошие_статьи").links
         for p in tqdm(pages, "Loading Wikipedia:\t"):
-            sents = sent_tokenize(wikipedia.page(p).content)
-            doc = [word_tokenize(sent) for sent in sents]
-            data.append(doc)
+            try:
+                sents = sent_tokenize(wikipedia.page(p).content)
+                doc = [word_tokenize(sent) for sent in sents]
+                data.append(doc)
+            except wikipedia.exceptions.PageError:
+                print("Cannot load page: " + p)
 
         with open(wiki_path, "wt") as f:
             json.dump(data, f)
