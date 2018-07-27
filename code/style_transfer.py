@@ -121,10 +121,13 @@ class Model(object):
         zeros, ones = tf.split(self.labels, 2)
         soft_h_tsf = soft_h_tsf[:, :1 + self.batch_len, :]
 
-        self.loss_d0, loss_g0 = discriminator(teach_h[:half], soft_h_tsf[half:],
+        teach_h1, teach_h2 = tf.split(teach_h, 2)
+        soft_h_tsf1, soft_h_tsf2 = tf.split(soft_h_tsf, 2)
+
+        self.loss_d0, loss_g0 = discriminator(teach_h1, soft_h_tsf2,
                                               ones, zeros, filter_sizes, n_filters, self.dropout,
                                               scope='discriminator0')
-        self.loss_d1, loss_g1 = discriminator(teach_h[half:], soft_h_tsf[:half],
+        self.loss_d1, loss_g1 = discriminator(teach_h2, soft_h_tsf1,
                                               ones, zeros, filter_sizes, n_filters, self.dropout,
                                               scope='discriminator1')
 
