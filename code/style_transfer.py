@@ -7,12 +7,12 @@ import pickle
 import numpy as np
 import tensorflow as tf
 
-from .vocab import Vocabulary, build_vocab
-from .accumulator import Accumulator
-from .options import load_arguments
-from .file_io import load_sent, write_sent
-from .utils import *
-from .nn import *
+from vocab import Vocabulary, build_vocab
+from accumulator import Accumulator
+from options import load_arguments
+from file_io import load_sent, write_sent
+from utils import *
+from nn import *
 import beam_search, greedy_decoding
 
 
@@ -151,7 +151,7 @@ class Model(object):
         self.grad_adv_norm = tf.global_norm(grad_adv)
         self.grad_norm = tf.global_norm(grad)
 
-        self.optimize_tot = opt.apply_gradients(list(zip(grad, theta_eg)))
+        self.optimize_tot = opt.apply_gradients(zip(grad, theta_eg))
         self.optimize_rec = opt.minimize(self.loss_rec, var_list=theta_eg)
         self.optimize_d0 = opt.minimize(self.loss_d0, var_list=theta_d0)
         self.optimize_d1 = opt.minimize(self.loss_d1, var_list=theta_d1)
