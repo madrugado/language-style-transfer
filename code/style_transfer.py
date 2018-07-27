@@ -118,7 +118,7 @@ class Model(object):
         # a batch's first half consists of sentences of one style,
         # and second half of the other
         half = self.batch_size / 2
-        zeros, ones = self.labels[:half], self.labels[half:]
+        zeros, ones = tf.split(self.labels, 2)
         soft_h_tsf = soft_h_tsf[:, :1 + self.batch_len, :]
 
         self.loss_d0, loss_g0 = discriminator(teach_h[:half], soft_h_tsf[half:],
