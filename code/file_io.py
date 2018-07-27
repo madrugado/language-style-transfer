@@ -40,7 +40,7 @@ def load_json(path):
         for doc in j:
             if doc['poet_id'] != 'pushkin':
                 continue
-            sents = sent_tokenize(doc["content"].replace("\\n", " ").replace("\xa0", ТУ" "))
+            sents = sent_tokenize(doc["content"].replace("\\n", " ").replace("\xa0", " "))
             doc = [word_tokenize(sent) for sent in sents]
             data.append(doc)
     return data
