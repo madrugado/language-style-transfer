@@ -168,11 +168,11 @@ def transfer(model, decoder, sess, args, vocab, data0, data1, out_path):
     losses = Accumulator(len(batches), ['loss', 'rec', 'adv', 'd0', 'd1'])
     for batch in batches:
         rec, tsf = decoder.rewrite(batch)
-        half = batch['size'] / 2
         # data0_rec += rec[:half]
         # data1_rec += rec[half:]
-        data0_tsf += tsf[:half]
-        data1_tsf += tsf[half:]
+        tsf1, tsf2 = tf.split(tsf, 2)
+        data0_tsf += tsf1
+        data1_tsf += tsf2
 
         loss, loss_rec, loss_adv, loss_d0, loss_d1 = sess.run([model.loss,
                                                                model.loss_rec, model.loss_adv, model.loss_d0,
