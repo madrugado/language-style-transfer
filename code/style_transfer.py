@@ -311,9 +311,17 @@ if __name__ == '__main__':
                         # gradients.output()
                         # gradients.clear()
 
+                        dev_losses = transfer(model, decoder, sess, args, vocab,
+                                              dev0, dev1, args.output + 'step{}.epoch{}'.format(step, epoch))
+                        dev_losses.output('dev')
+                        if dev_losses.values[0] < best_dev:
+                            best_dev = dev_losses.values[0]
+                            print('saving model...')
+                            model.saver.save(sess, args.model)
+
                 if args.dev or args.wikipedia:
                     dev_losses = transfer(model, decoder, sess, args, vocab,
-                                          dev0, dev1, args.output + '.epoch%d' % epoch)
+                                          dev0, dev1, args.output + 'step{}.epoch{}'.format(step, epoch))
                     dev_losses.output('dev')
                     if dev_losses.values[0] < best_dev:
                         best_dev = dev_losses.values[0]
