@@ -77,7 +77,7 @@ def write_doc(docs, sents, path):
         index = 0
         for doc in docs:
             for i in range(len(doc)):
-                f.write(' '.join(sents[index]))
+                f.write(' '.join(sents[index]).encode("utf-8"))
                 f.write('\n' if i == len(doc) - 1 else ' ')
                 index += 1
 
@@ -85,7 +85,7 @@ def write_doc(docs, sents, path):
 def write_sent(sents, path):
     with open(path, 'w') as f:
         for sent in sents:
-            f.write(' '.join(sent) + '\n')
+            f.write((' '.join(sent) + '\n').encode("utf-8"))
 
 
 def write_vec(vecs, path):
