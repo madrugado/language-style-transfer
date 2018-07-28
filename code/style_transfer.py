@@ -315,7 +315,8 @@ if __name__ == '__main__':
                         # gradients.clear()
 
                         dev_losses = transfer(model, decoder, sess, args, vocab,
-                                              dev0, dev1, args.output + 'step{}.epoch{}'.format(step, epoch))
+                                              dev0[:100], dev1[:100],
+                                              args.output + 'step{}.epoch{}'.format(step, epoch))
                         dev_losses.output('dev')
                         if dev_losses.values[0] < best_dev:
                             best_dev = dev_losses.values[0]
