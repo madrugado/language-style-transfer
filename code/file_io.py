@@ -73,17 +73,17 @@ def load_wikipedia():
 
 
 def write_doc(docs, sents, path):
-    with open(path, 'w') as f:
+    with open(path, 'wb') as f:
         index = 0
         for doc in docs:
             for i in range(len(doc)):
                 f.write(' '.join(sents[index]).encode("utf-8"))
-                f.write('\n' if i == len(doc) - 1 else ' ')
+                f.write(('\n' if i == len(doc) - 1 else ' ').encode('utf-8'))
                 index += 1
 
 
 def write_sent(sents, path):
-    with open(path, 'w') as f:
+    with open(path, 'wb') as f:
         for sent in sents:
             f.write((' '.join(sent) + '\n').encode("utf-8"))
 
