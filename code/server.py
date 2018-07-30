@@ -17,12 +17,12 @@ vocab = Vocabulary(args.vocab, args.embedding, args.dim_emb)
 print('vocabulary size:', vocab.size)
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-with tf.Session(config=config) as sess:
-    model = create_model(sess, args, vocab)
-    if args.beam > 1:
-        decoder = beam_search.Decoder(sess, args, vocab, model)
-    else:
-        decoder = greedy_decoding.Decoder(sess, args, vocab, model)
+sess = tf.Session(config=config)
+model = create_model(sess, args, vocab)
+if args.beam > 1:
+    decoder = beam_search.Decoder(sess, args, vocab, model)
+else:
+    decoder = greedy_decoding.Decoder(sess, args, vocab, model)
 
 
 @app.route('/ready')
